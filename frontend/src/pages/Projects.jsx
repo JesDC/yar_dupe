@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-toast.configure();
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -93,8 +91,13 @@ const Projects = () => {
                       <ul className="list-disc pl-5 text-gray-600">
                         {(() => {
                           try {
-                            return JSON.parse(project.tools).map(
-                              (tool, index) => <li key={index}>{tool}</li>
+                            const tools = JSON.parse(project.tools);
+                            return Array.isArray(tools) ? (
+                              tools.map((tool, index) => (
+                                <li key={index}>{tool}</li>
+                              ))
+                            ) : (
+                              <li>No tools listed</li>
                             );
                           } catch (error) {
                             console.error("Error parsing tools:", error);
@@ -126,6 +129,9 @@ const Projects = () => {
           </div>
         </div>
       </div>
+
+      {/* Toast Container - Required for toast messages */}
+      <ToastContainer />
     </div>
   );
 };
